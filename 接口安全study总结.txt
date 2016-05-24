@@ -1,0 +1,25 @@
+
+1. 需求： 应对非法调用和攻击；传输的数据不被窥视或修改
+
+2. 相关技术：https，字符串加密，访问控制
+
+3. 研究结果
+   1) 传输过程可以用crypto-js进行字符串加密，防止内容被窥视或修改
+      # 1 验证型内容，用不可逆的md5，如 登录密码，除了用户自己，不希望任何人知道；
+      # 2 数据内容，用可解密的AES，如 用户名，用户提交的表达数据等。
+
+      参考 http://cryptojs.altervista.org 传输层加密库
+      https://www.douban.com/note/276592520/
+
+   2) 公开接口防止被非法调用
+      # 1 页面打开时，已用户ID获取一个访问令牌，通过ws监听心跳，令牌只在当前链接有效，心跳失败令牌失效。
+      # 2 把接口调用都移到 web 服务器，如此，web服务器将成为瓶颈。 可添加静态化缓存。【不推荐】
+      # 3 防火墙，指定白名单。 如 设置 Access-Control-Allow-Origin。 方便易行。
+
+      参考 https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+
+   3) HTTPS：需要三方付费服务，且需要服务器端开发配置，客户端使用也对用户造成困扰。【不推荐】
+
+      参考 证书颁发机构（非免费） https://www.startssl.com/Account
+      使用OpenSSL生成证书 http://www.cnblogs.com/AloneSword/p/3809002.html
+
