@@ -1,0 +1,13 @@
+#layout {
+width:50%;
+}
+#content {
+	margin-left:2.5%;
+	width:90%;
+}
+
+
+@media screen and (max-width:982px){
+	header{display:none;}
+	#imgtxt,#tdi{width:90%;}
+}

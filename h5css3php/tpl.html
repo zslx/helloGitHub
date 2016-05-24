@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8" />
+	<meta name="keywords" content="html5,css3,javascript,网站开发" />
+	<meta name="description" content="H5技术应聘样例展示 by 朱胜林" />
+
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />    
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="format-detection" content="telephone=yes"/>
+	<meta name="msapplication-tap-highlight" content="no" />
+
+	<!--[if lt IE 9]>
+		<script src="html5.js" type="text/javascript"></script>
+		<![endif]-->
+
+	<title>Html5 + CSS3 + javascript + php</title>
+	<?php if ($hname==='localhost'):?>
+	<link rel="stylesheet" href="http://localhost/min/?f=5/normalize.css,5/zsl.css&t=<?=time()?>" type="text/css" />
+	<script src="http://localhost/5/jquery-1.7.1.js"></script>
+	<script src="http://localhost/5/jqlazyimg.js"></script>
+	<script src="http://localhost/5/mordernizr.js"></script>
+	<script src="http://localhost/5/jquery-mobilemenu.js"></script>
+	<script src="http://localhost/5/zsl.js"></script>
+	<script src="http://localhost/5/app.js"></script>
+	<?php else: ?>
+	<link rel="stylesheet" href="http://h5c3.sinaapp.com/min/?f=css/normalize.css,css/zsl.css&<?=time()?>" type="text/css" />
+	<script src="http://h5c3.sinaapp.com/min/?f=js/jquery-1.7.1.js,js/jqlazyimg.js,js/mordernizr.js,js/jquery-mobilemenu.js,js/zsl.js,js/app.js"></script>
+	<?php endif ?>
+
+	<style>
+	  html { -webkit-text-size-adjust: none; } /*iphone*/
+	  img {
+		  max-width: 100%;
+		  height: auto;
+		  width: auto\9; /* ie8 */
+	  }
+	</style>
+
+	<script> 
+	  // 服务器推送SSE
+	  $(document).ready(function(){ 
+		  zsl.showViewportSize();    
+		  
+		  var sset = document.getElementById("ssetag");
+		  sset.c = 0;
+		  //检查浏览器支持情况
+		  if(typeof(EventSource)!=="undefined") { 
+			  //定义个对象，用于初始化事件源，这里用c.php这个页面实现 
+			  <?php if ($hname==='localhost'):?>
+				  var eSource = new EventSource("/h5/sse.php"); 
+			  <?php else:?>
+				  var eSource = new EventSource("/sse.php"); 
+			  <?php endif ?>
+				  sset.innerHTML='server-sent events';
+			  //detect message receipt 
+			  eSource.onmessage = function(event) {
+				  // console.log(event.data);
+				  sset.innerHTML = event.data;
+			  };
+			  eSource.onerror = function(err) {
+				  zsl.clog(err.eventPhase);
+				  // onmessage, onerror 都触发了！？
+				  // sset.c = sset.c-1;
+				  // sset.innerHTML = sset.c+'<br />'; 
+			  };
+		  }else {
+			  sset.innerHTML="没有收到服务端Server-Sent数据."; 
+		  }
+		  
+		  $(document).dblclick(function(){
+			  $(this).scrollTop(0);
+		  });
+		  
+		  // websocket
+		  var socketbtn = document.getElementById('testbtn');
+		  singletonBtn.add('连接', function(){
+			  zsl.initWebSocket('ssetag');
+		  },socketbtn);
+
+		  singletonBtn.add('发送消息',function(){
+			  zsl.wsend(document.getElementById('sometxt').innerHTML);
+		  },socketbtn);
+	  });
+
+	  $(window).resize(function(e) {
+		  zsl.showViewportSize();
+
+		  // 条件加载
+		  Modernizr.load([
+		  	  {
+		  		  test: Modernizr.mq('only screen and (max-width: 720px)'),
+		  		  // yep : ['js/jquery.mobilemenu.js,js/loadtest.js'],
+		  		  yep : ['/5/jquery-mobilemenu.js','/5/loadtest.js'],
+				  
+				  complete : function () {
+
+					  // $('#mainNav').mobileMenu({
+					  // 	  ulsource : "#mainNav",
+					  // });
+
+					  // $('#mainNav').mobileMenu({
+					  // 	  switchWidth: 600,
+					  // 	  topOptionText: '导航条变为菜单',
+					  // 	  indentString: '&nbsp;&nbsp;&nbsp;'
+					  // });
+
+					  zsl.clog('加载完成,做点什么');
+
+					  // $("#mainNav").mobileMenu({
+					  // 	  ulsource : "#mainNav > ul",
+					  // 	  maxlevel : 4 });
+
+				  }
+			  }
+		  ]);
+
+	  });
+	</script>
+  </head>
+  <body>
+	<div id="wrapper">
+	  <header class="clrf">
+		<div id="logo"><img src="img/h5c3.png"></div>
+		<nav>
+		  <ul id="mainNav">
+			<li><a href="javascript:void(0)">响应布局</a></li>
+			<li><a href="javascript:zsl.jump('resmin');">压缩</a></li>
+			<li><a href="javascript:zsl.jump('lneed')">按需加载</a></li>
+			<li><a href="javascript:zsl.jump('webcomp');" >组件化</a></li>
+			<li><a href="javascript:zsl.jump('ssetag')">心跳</a></li>
+			<li><a href="javascript:zsl.jump('webcomp')" >超时处理</a></li>
+			<li><a href="javascript:zsl.jump('webcomp')" >模板</a></li>
+			<li><a href="javascript:zsl.jump('speedo')" >加速器</a></li>
+		  </ul>	  
+		</nav>
+	  </header>
+	  	  
+	  <section id="content">
+		<output id="debug"></output>
+		<article>
+		  html 超文本标记语言，定义页面结构和表达文本语义；
+		  css 层叠样式表，控制元素的展示特效；
+		  js  脚本语言，增强页面交互和动态功能；
+		</article>
+		<article>
+		  <h3>响应式布局</h3> <!-- respone -->
+		  <div class="floatl col1">
+			1 确定需要兼容的设备类型、屏幕尺寸；<br>
+			2 制作线框原型：各个尺寸的排列方式；<br>
+			3 视觉设计：间距、配色、可点区等；<br>
+			4 前端实现：<br>
+			1 meta viewport<br>
+			2 html 结构<br>
+			3 Media Queries 响应式的核心<br>
+
+			原则：内容优先；有设计的改变布局（要求可控，而不是随机自动的）。
+		  </div>
+		  <div class="floatr col2">
+			关键点：<br>
+			一是如何在不修改Dom结构的前提下调整布局。<br>
+			二是如何判断屏幕分辨率并应用对应的CSS。<br>
+			以上两点都应该不依赖与JS。<br>
+			<pre>
+ 响应式布局三个关键点：
+ 1、流式布局 Liquid Layout
+ 2、Media Query
+ 3、viewport
+			</pre>
+		  </div>
+		  <div class="floatl opt"> 缩小到 480 以下，我就消失给你看~~ <p>填充一些内容<br>
+不太重要的内容，在小的手机屏幕上就不显示了。例如 某些主题内容之外的关联信息，导航信息，推荐信息等。
+		  </p></div>
+		  <div class="floatl col3">
+			<img src="img/h5c3.png" original="img/1.jpg">
+		  </div>
+		  <div class="floatr col2">
+			我是最后一个。
+		  </div>
+		</article>
+		<article>
+		  <h3 id="lneed">按需加载</h3>
+		  1 自己写的 lazy-img<br>
+		  2 使用Modernizr按需加载资源<br>
+Modernizr 是一套 JavaScript 库，用来侦测浏览器是否支持新的网站技术，这些新技术来自仍在持续发展的 HTML5 与 CSS3 规范。
+		</article>
+		<article id="resmin">
+		  <h3>压缩</h3>
+<pre>一般情况下，网站速度的瓶颈都在前端，而最关键的就是资源的加载速度，但是大多数浏览器都有单个域名并发请求数限制，所以如果一个页面中存在很多的资源，比如CSS和JavaScript文件，那么明显会降低网站的加载速度，比较好处理方式就是把多个文件通过一个请求来访问，这样既不会影响之前的文件维护，又会减少资源的清楚数量，Minify就是为之而生。
+　　下面两幅图分别是启用Minify之前和启用Minify之后网站请求时间的一个对比，可以看出启用Minify之后，资源的加载时间从250ms减少到了125ms，总共节省了50%的时间。
+　　特性：
+
+　　合并多个CSS或JavaScript文件为一个文件，减少请求数量，并且进行minify处理
+
+　　使用了多个开源的库，包括 JSMin.php ，Minify CSS，Minify HTML
+
+　　服务端缓存（fils/APC/Memcache），可以避免不必要的重复处理
+
+　　当浏览器存在资源的缓存，返回HTTP 304 Not Modified
+
+　　多个文件合并时，自动生成URI
+
+　　当开启服务端缓存的时候，在一般的服务器上Minify每秒可以处理几百个并发请求
+
+  　　根据请求头，开启Content-Encoding： gzip。在服务端缓存开启的情况下，Minify提供gzipped 文件速度比Apache’s mod_deflate模块要快</pre>
+		  <p>aritcle和pre组合的效果</p>
+		</article>
+		<aritcle>
+		  <h3 id="webcomp">组件化</h3>
+		  <div id="webcom"></div>
+		  <noscript id="data-json">
+			{"html":"ajax.php?getparams=focus-box",
+			"css":["/plugin/focus-box/index.css"],
+			"js":["/plugin/focus-box/public_func.js","/plugin/focus-box/f.js","/plugin/focus-box/f1.js"],
+			"pid":"module-node"
+			}
+		  </noscript>
+		  <div id="module-node"></div>
+
+		</aritcle>
+		<article>
+		  <div class="floatl col4">
+			<p><a href="http://javascript.ruanyifeng.com/bom/websocket.html" target="_blank">Web Sockets</a>, Server-Sent Events </p>
+			<p>WebSocket协议完全可以取代Ajax方法，用来向服务器端发送文本和二进制数据，而且还没有“同域限制”。 WebSocket不使用HTTP协议，而是使用自己的协议。</p>
+ <pre>HTTP Protocol是无状态协议的，每次请求都经过以下六个步骤：
+1 Client发起请求
+2 Server接收请求
+3 经过三次握手，建立连接
+4 Server处理请求
+5 Server将结果发给Client
+6 断开连接</pre>
+			<p>Web Storage和Web SQL Database API</p>
+		  </div>
+		  <div class="floatl col4">
+			<img src="img/h5c3.png" original="img/4.gif">
+		  </div>
+		  <div class="floatl col4"><img id="taiji" src="img/h5c3.png" original="img/3.png"></div>
+		</article>
+		<article class="mcols">
+		  <h3 id="speedo">网页加速器</h3>
+		  <div class="floatl col5">
+		  <b>网站打开快慢的相关因素：</b>
+		  <ol>
+			<li>网速：DNS，带宽等，将来秒杀电影</li>
+			<li>服务器：响应大并发链接和处理逻辑的性能</li>
+			<li>客户端：硬件性能，软件性能</li>
+			<li><ol><b>网页内容</b>
+			  <li>页面大小：文本、图片、多媒体、程序(css,js)</li>
+			  <li>网络请求数量：一次链接三次握手</li>
+			  <li>程序执行效率：js,css</li>
+			  <li>代码合理结构：边下载边解析，加载顺序，按需加载</li>
+			  <li>浏览器性能：缓存和解析效率</li>
+			</ol></li>
+			<b>应对策略：静态化、缓存、化整为零</b>
+		  </ol>
+		  </div>
+		  <div class="floatr col5"><img src="img/h5c3.png" original="img/5.jpg" /></div>
+		</article>
+	  </section>
+
+	  <aside> <h3>侧栏</h3>
+		<h2>Viewport Width:</h2>
+		<p id="width">Resize to find out!</p>
+		<h2>Viewport Height:</h2>
+		<p id="height">Resize to find out!</p>
+		<figure class="imgbox">
+		  <figcaption>图片自适应</figcaption>
+		  <img src="img/h5c3.png" original="img/2.jpg">
+		</figure>
+		<i>心跳:</i>
+		<output id="ssetag"></output>
+		<div id="prediv">
+		  <div id="testbtn"></div>
+		  <div id="sometxt" contenteditable="true">输入发送的消息</div>
+<pre class="precode">
+实现方法： 1 ajax, 2 sse, 3 websocket
+<hr>
+function doAjaxLongPolling(){
+	$.ajax({
+		url: "http://xxx",
+		timeout: 1000*60,
+		success: function(data){
+			//data就是从Server获取的消息
+		},
+		complete: function(){
+			doAjaxLongPolling();
+		},
+		error: function(){
+			doAjaxLongPolling();
+		}
+	});
+}
+</pre></div>
+	  </aside>
+
+	  <hr style="clear:both">
+	  
+	  <footer>here is footer. 2014-06-01 16:17:28 copyright by 朱胜林
+	  <h2 class="test"><?=$phpvar?></h2>
+	  </footer>
+	</div>
+  </body>
+</html>

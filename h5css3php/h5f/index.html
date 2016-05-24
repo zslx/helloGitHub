@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8" />
+	<meta name="keywords" content="html5,css3,javascript,网站开发" />
+	<meta name="description" content="H5微信框架 by 朱胜林 2014-06-12 10:42:07" />
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="format-detection" content="telephone=yes"/>
+	<meta name="msapplication-tap-highlight" content="no" />
+	
+	<title>Html5 + CSS3 + javascript + phproxy</title>
+	
+	<link rel="stylesheet" href="/h5f/controller/normalize.css" type="text/css" />
+	<link rel="stylesheet" href="/h5f/controller/v_response.css?t=<?=time()?>" type="text/css" />
+	
+	<script src="/js/jquery-2.1.1.js"></script>
+	<script src="/h5f/controller/v_util.js"></script>
+	<script>VVEngine(window);</script>
+	<script src="/h5f/controller/v_jqlazyimg.js"></script>
+	<script src="/h5f/controller/v_wxapp.js"></script>
+	
+	<style>
+	  /* 每个页面与众不同的微调 */
+	  html { -webkit-text-size-adjust: none; } /*iphone*/
+	</style>
+	
+	<script> 
+	  /* 每个页面与众不同的微调 */
+	  $(document).ready(function(){ 
+		  // $(document).dblclick(function(){
+		  // 	  $(this).scrollTop(0);
+		  // });
+	  });
+	  
+	  $(window).resize(function(e) {
+		  // zsl.showViewportSize();
+		  
+		  // z.showViewportSize = function() {
+		  // 	  var the_width = $(window).width();
+		  // 	  var the_height = $(window).height();                   
+		  // 	  $('#width').text(the_width);
+		  // 	  $('#height').text(the_height);
+		  // };
+		  
+		  // 条件加载
+	  });
+	</script>
+	
+  </head>
+  <body>
+	<div id="wrapper">
+	  <header class="clrf">
+		<div id="logo"></div>
+		<nav>
+		  <ul id="mainNav">
+			<li><a href="javascript:void(0)">响应布局</a></li>
+			<li><a href="javascript:zsl.jump('lneed')">按需加载</a></li>
+			<li><a href="javascript:zsl.jump('webasync');" >异步请求、监听、心跳</a></li>
+			<li><a href="javascript:zsl.jump('webcomp')" >超时处理</a></li>
+			<li><a href="javascript:zsl.jump('webcomp');" >组件/模板</a></li>
+		  </ul>
+		</nav>
+	  </header>
+	  
+	  <section id="content">
+		<output id="debug"></output>
+		<article>
+		  <div class="border">
+			<div style="text-align:center"><h1>实现响应式布局 OK</h1></div>
+			<h3>第一步 set viewport</h3>
+			<?= nl2br(htmlentities('
+              <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+              <meta name="apple-mobile-web-app-capable" content="yes" />
+              <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+              <meta name="format-detection" content="telephone=yes"/>'))
+			  ?>
+			<!-- 当该 HTML 页面在手机上浏览时，该标签用于指定是否将网页内容中的手机号码显示为拨号的超链接。 -->
+			<h3>第二步 normalize </h3>
+			统一样式 <b>normalize.css</b>
+			<h3>第三步 liquid-layout</h3>
+			<b>v_response.css</b>: 元素用float:left/right，尺寸用百分比，字体用em，图片设置。
+			<h3>第四步 media query</h3> 判断设备屏幕参数。
+			完工。
+		  </div>
+		  <div class="border">
+			<div style="text-align:center"><h1>图片按需加载 OK</h1></div>
+			<h3> v_jqlazyimg.js</h3>
+		  </div>
+		  <div class="floatl col2">
+			<img width=800 height=100 src="/h5f/res/1.png" original="/h5f/res/1.jpg">
+			第一个。
+		  </div>
+		  <div class="floatl">
+			实现策略：进入可视区的图片才加载。<br>
+			实现方式：初始状态的图片标签用占位符（很小的图标）显示， 当浏览器窗口缩放和滚动条移动时，<br>
+			判断图片的位置是否进入可视区，如果进入了，则用真正的图片代替占位符。
+		  </div>
+		</article>
+		
+		<article>
+			<div style="text-align:center" id="webasync"><h1>异步请求、监听、心跳 OK</h1></div>
+			<div class="floatl">
+			  1 异步加载，不需要维持链接，适合用 ajax.<br>
+			  2 服务器监听和心跳，需要维持链接，用 websocket<br>
+			  可以避免不停地进行http请求。<br>
+			  【服务器端需要单独部署处理WebSocket的代码】<br>
+			  3 Web Workers 是 H5 提供的javascript多线程解决方案，<br>
+			  Worker运行js时不冻结用户界面。<br>
+			  防止心跳程序造成UI交互的卡顿现象<br>
+			  eg.<br>
+			  九型---你属哪一型（输入1~9）：
+			  <input id="ninetype" type="number" name="ninetype" min="1" max="9" step="1" value=5><br>
+			  设定超时时间：<input id="timeout" type="number" name="timeout" min="1" max="8000" step="1" value=2000>
+			  <button id="ninetypebtn">看看异步加载</button>
+
+			</div>
+			<div id="ninetypeshow" class="floatl"></div>
+			<div id="websocket" class="floatl">
+			  <h3>监听和心跳：长链接双工通信</h3>
+			  <button id="beatstart">启动心跳</button> <button id="beatstop">停止心跳</button>
+			  <div id="beats"></div>
+			</div>
+			<div class="floatl">
+			  <button id="worker_loader">用worker加载资源</button>
+			  <button id="initsse">启动SSE</button><br>
+			  <textarea id="wsdata" name="wsdata">输入发送到服务器的内容</textarea>
+			  <button id="wsinitbtn">连接</button> <button id="wsbtn">发送</button>
+			  <h3 id="wsrtxt"> websocket 服务器端实现 ws:// 协议 </h3>
+			  <p><a href="http://javascript.ruanyifeng.com/bom/websocket.html" target="_blank">Web Sockets</a></p>
+			  <!-- Server-Sent Events
+ SSE超过Websockets的优点：
+				   运行HTTP协议，而不是自定义协议
+				   能够poly-filled JavaScript反相移植不兼容SSE的浏览器
+				   内置支持重新连接和事件识别符
+				   相当简单的协议
+				   缺点：伪推送，看网络请求就明白了，定时发起http。
+ Websockets超过SSE的优点：
+				   实时传输，双方向通信
+				   浏览器支持率较高-->
+			</div>
+		</article>
+
+		<aritcle>
+		  <div class="floatl col0">
+			<div style="text-align:center" id="zips"><h1>组件和模板 OK</h1></div>
+			<div id="imgtxt" class="floatl">点击加载组件</div>
+			<div id="tdi" class="floatl">点击加载组件</div>
+			<div style="text-align:center"><a href="/h5f/app/demo.html" target="_blank">模板化</a></div>
+		  </div>
+		</aritcle>
+
+		<article>
+		  <div class="floatl col0">
+			<div style="text-align:center" id="zips"><h1>压缩 OK</h1></div>
+			<p>两种压缩： css,js 的 <a href="https://github.com/yui/yuicompressor" target="_blank">min压缩</a>； 整个网页的 zip 压缩。</p>
+<pre class="precode">
+启用apache2的gzip功能
+
+      apache2官方在开发的时候，就已经把网页压缩考虑进去，内建了mod_deflate模块，所以apache2就不需要使用到mod_gzip了，这两者的工作原理是类似的， 还有启用mod_deflate这个网页压缩的模块，功能和效率和mod_gzip是差不多的，甚至还好一些，就不需要再用mod_gzip模块了。
+
+      配置文件实例：
+
+      ifmodule mod_deflate.c
+      DeflateCompressionLevel 9
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml application/x-httpd-php
+      AddOutputFilter DEFLATE js css
+      ifmodule
+</pre>
+		  </div>
+		</article>
+
+	  </section>
+	  <p>Web Storage和Web SQL Database API</p>
+	  
+	  <hr style="clear:both">
+	  
+	  <footer>here is footer. 2014-06-01 16:17:28 copyright by 朱胜林
+		<h2 class="test"><?=$phpvar?></h2>
+	  </footer>
+	</div>
+  </body>
+</html>
