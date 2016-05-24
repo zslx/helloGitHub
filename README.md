@@ -39,3 +39,18 @@ git log --pretty=online
 6. git commit -m "some words"
 7. git push origin master
 8. over
+9. git branch --set-upstream-to=origin/master master
+   # 设置 upstream 之后 pull 和 push 就有默认参数了
+
+# 进阶使用
+https://developer.github.com/
+http://www.gitguys.com/
+
+# 命令行创建 github repository
+curl -u 'username' https://api.github.com/user/repos -d '{"name":"RepoName","description":"","auto_init","true"}'
+git remote add origin https://github.com/zslx/RepoName.git
+
+git diff: 显示您的工作目录和index之间的差异.
+git diff –cached: 显示index和最近的commit之间的差异.
+git diff HEAD: 显示您的工作目录和最新的commit之间的差异.
+
