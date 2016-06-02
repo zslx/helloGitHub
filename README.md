@@ -50,7 +50,8 @@ http://www.gitguys.com/
 curl -u 'username' https://api.github.com/user/repos -d '{"name":"RepoName","description":"","auto_init","true"}'
 git remote add origin https://github.com/zslx/RepoName.git
 
-git diff: 显示您的工作目录和index之间的差异.
-git diff –cached: 显示index和最近的commit之间的差异.
-git diff HEAD: 显示您的工作目录和最新的commit之间的差异.
-
+git diff   显示您的工作目录和index之间的差异.
+git diff –cached   显示index和最近的commit之间的差异.
+git diff HEAD   显示您的工作目录和最新的commit之间的差异.
+git diff --stat  查看 diff 统计结果 
+git diff HEAD^ HEAD   比较上次提交commit和上上次提交
