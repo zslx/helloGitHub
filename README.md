@@ -22,8 +22,29 @@ Study git&hub
 1. github 注册账号，托管代码
 2. git    安装本地程序
 3. ssh-keygen 创建公钥和私钥，并在github配置。
-   如果使用 https 协议则不需要 3,4 两步。
-4. ssh -T -v git@github.com 验证账号可用
+   # 参考 https://help.github.com/categories/ssh/
+   1) Checking for existing SSH keys
+      $ls -al ~/.ssh
+   2) 创建 $ssh-keygen -t rsa -C 'some@mail.com'
+      When you're prompted to "Enter a file in which to save the key," press Enter. This accepts the default file location.
+   3) Adding your SSH key to the ssh-agent
+      # Ensure ssh-agent is enabled: $eval "$(ssh-agent -s)"
+      # start the ssh-agent in the background
+      $ssh-add ~/.ssh/id_rsa
+   4) Copy the SSH key to your clipboard. 防止复制多少空白 使用 clip 工具
+      $ clip < ~/.ssh/id_rsa.pub
+   5) github site:In the top right corner of any page, click your profile photo, then click Settings.
+      # pubkey 添加到 github, Key is already in use. 一对key 只能用于一个账号。
+      In the user settings sidebar, click SSH and GPG keys.
+      Click New SSH key.
+      In the "Title" field, add a descriptive label for the new key. For example, "Personal MacBook Air".
+      Paste your key into the "Key" field.
+      Click Add SSH key.
+      Confirm the action by entering your GitHub password.
+4. ssh -T -v git@github.com
+   ssh -T git@github.com
+   验证账号可用
+   # 如果使用 https 协议则不需要 3,4 两步。
 
 # 旁支：概念：工作区，暂存区（stage,index），repository
 git status  查看代码库状态
@@ -55,3 +76,10 @@ git diff –cached   显示index和最近的commit之间的差异.
 git diff HEAD   显示您的工作目录和最新的commit之间的差异.
 git diff --stat  查看 diff 统计结果 
 git diff HEAD^ HEAD   比较上次提交commit和上上次提交
+
+# ssh key 多账号设置 【多个github帐号的SSH key切换】
+http://justjavac.com/git/2012/04/13/multiple-ssh-keys.html
+
+# 技巧
+git commit -a是把unstaged的文件变成staged（这里不包括新建(untracked)的文件），然后commit.
+用 git commit -am'comments' 代替 git add . 和 git commit -m'comments'
