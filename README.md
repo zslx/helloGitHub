@@ -83,3 +83,54 @@ http://justjavac.com/git/2012/04/13/multiple-ssh-keys.html
 # 技巧
 git commit -a是把unstaged的文件变成staged（这里不包括新建(untracked)的文件），然后commit.
 用 git commit -am'comments' 代替 git add . 和 git commit -m'comments'
+
+# 问题：用另一个账号下载和提交了代码，如何切换回去？
+1 此方法无效：git commit --amend --author='ZSL <shenglinzh@gmail.com>'
+
+2 修改 .git/config  也没成功
+url = https://github.com/zslx/linux.git
+改为
+url = https://zslx@github.com/zslx/linux.git
+再试
+url = https://user:password@github.com/user/blahblah.git
+这里提示 用户名或密码错误， 改回不带用户名密码的链接后，出现：
+Git Credential Manager fow Windows
+要求重新输入密码。 Oh yeah!!
+成功！！！
+
+了解 Git Credential Manager
+http://blog.miniasp.com/post/2016/02/01/Useful-tool-Git-Credential-Manager-for-Windows.aspx
+
+git config --global credential.helper manager
+使用 Git Credential Manager for Windows
+
+正常來說，只要把 Git Credential Manager for Windows 裝好，甚麼都不用設定就會自動生效！
+
+無論你用 TortoiseGit 或命令提示字元下的 Git.exe 命令列工具，只要第一試圖跟遠端儲存庫連線且需要密碼時，
+他都會自動跳出帳戶密碼提示，而當你輸入完帳號密碼後，
+該組帳號密碼就會被儲存到系統的 Windows Credential Store 儲存區中 (認證管理員)。
+
+找到它啦： 控制面板\用户帐户\凭据管理器
+
+3 You must define:
+environment variable %HOME%
+put a _netrc file in %HOME%
+If you are using Windows 7
+
+run the cmd type this:
+
+setx HOME %USERPROFILE%
+and the %HOME% will be set to 'C:\Users\"username"'
+
+then go to it and make a file called '_netrc'
+
+Note: for Windows, you need a '_netrc' file, not a '.netrc'.
+
+Its content is quite standard (Replace the with your values):
+
+machine <hostname1>
+login <login1>
+password <password1>
+machine <hostname2>
+login <login2>
+password <password2>
