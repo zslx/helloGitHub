@@ -83,3 +83,37 @@ http://justjavac.com/git/2012/04/13/multiple-ssh-keys.html
 # 技巧
 git commit -a是把unstaged的文件变成staged（这里不包括新建(untracked)的文件），然后commit.
 用 git commit -am'comments' 代替 git add . 和 git commit -m'comments'
+
+# 定义快捷方式
+git status
+git config --global alias.st 'status'
+git st
+
+
+# 放弃现有修改
+恢复到最后一次提交的改动：
+
+git checkout -- + 需要恢复的文件名
+
+但是，需要注意的是，如果该文件已经 add 到暂存队列中，上面的命令就不灵光喽
+需要先让这个文件取消暂存：
+
+git reset HEAD -- + 需要取消暂存的文件名
+
+然后再使用第一条命令。
+
+如果感觉命令多了记不住，那就做一两个匿名呗，比如：
+
+git config --global alias.unstage 'reset HEAD --'
+git config --global alias.restore 'checkout --'
+
+我们拿 README.md 这个文件举例，比如修改了一段文字描述，想恢复回原来的样子：
+
+git restore README.md
+
+即可，如果修改已经被 git add README.md 放入暂存队列，那就要
+
+git unstage README.md
+git restore README.md
+
+才能恢复成功哦。
