@@ -1,4 +1,4 @@
-# helloGitHub
+# Hello Git and Hub
 Study git&hub
 
 # 为啥从SVN转向Git
@@ -88,6 +88,9 @@ git commit -a是把unstaged的文件变成staged（这里不包括新建(untrack
 git status
 git config --global alias.st 'status'
 git st
+
+全局配置文件在 ~/.gitconfig
+当前项目的配置文件在 .git/config
 
 # 放弃现有修改
 恢复到最后一次提交的改动：
