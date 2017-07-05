@@ -1,6 +1,6 @@
 # Hello Git and Hub
 https://git-scm.com/book/zh/v2
-Study git&hub, 先看上面的官网文档。
+先看上面的官网文档。
 
 # 为啥从SVN转向Git
 1. 无网络时开发，也能使用版本管理功能
